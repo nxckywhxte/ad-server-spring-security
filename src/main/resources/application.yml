@@ -1,0 +1,21 @@
+server:
+  port: 1010
+spring:
+  datasource:
+    url: jdbc:postgresql://31.134.130.194:8888/ad-server
+    password: postgres
+    username: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    url: jdbc:postgresql://31.134.130.194:8888/ad-server
+    user: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+jwt:
+  secret: y0j49zaqdv4ttb8r9b4zbj1dhhrz0cpj
+  lifetime: 5min
