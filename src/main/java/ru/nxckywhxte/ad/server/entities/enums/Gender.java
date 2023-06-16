@@ -1,4 +1,4 @@
-package ru.nxckywhxte.ad.server.entities;
+package ru.nxckywhxte.ad.server.entities.enums;
 
 public enum Gender {
     MALE("Мужской"),
