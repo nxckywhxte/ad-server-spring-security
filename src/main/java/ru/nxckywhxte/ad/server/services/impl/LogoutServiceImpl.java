@@ -29,7 +29,7 @@ public class LogoutServiceImpl implements LogoutService {
         accessToken = authHeader.substring(7);
         Token storedToken = tokenRepository.findByToken(accessToken)
                 .orElse(null);
-        if (Objects.isNull(storedToken)) {
+        if (Objects.nonNull(storedToken)) {
             storedToken.setExpired(true);
             storedToken.setRevoked(true);
             tokenRepository.save(storedToken);
