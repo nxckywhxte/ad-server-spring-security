@@ -6,8 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -32,10 +32,13 @@ public class User {
     private String hashedPassword;
 
     @Column(name = "created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private Date createdAt = new Date();
 
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private Date updatedAt = new Date();
+
+    @OneToMany(mappedBy = "user")
+    private Collection<Token> tokens;
 
     @ManyToMany
     @JoinTable(

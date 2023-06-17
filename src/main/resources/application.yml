@@ -2,7 +2,8 @@ server:
   port: 1010
 spring:
   datasource:
-    url: jdbc:postgresql://31.134.130.194:8888/ad-server
+#    url: jdbc:postgresql://31.134.130.194:8888/ad-server
+    url: jdbc:postgresql://192.168.1.4:5432/nw-db
     password: postgres
     username: postgres
     driver-class-name: org.postgresql.Driver
@@ -12,10 +13,19 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   flyway:
-    url: jdbc:postgresql://31.134.130.194:8888/ad-server
+    url: jdbc:postgresql://192.168.1.4:5432/nw-db
     user: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
-jwt:
-  secret: y0j49zaqdv4ttb8r9b4zbj1dhhrz0cpj
-  lifetime: 5min
+application:
+  security:
+    access-token:
+      secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      expiration: 300000
+    refresh-token:
+      expiration: 1800000
+
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html

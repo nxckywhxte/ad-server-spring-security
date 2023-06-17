@@ -6,9 +6,14 @@ import org.springframework.stereotype.Repository;
 import ru.nxckywhxte.ad.server.entities.Role;
 import ru.nxckywhxte.ad.server.entities.User;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 @Transactional
 public interface RoleRepository extends JpaRepository<Role, UUID> {
+    Role findRoleById(UUID id);
+    Optional<Role> findRoleByName(String name);
+    Boolean existsRoleByName(String name);
+
 }
