@@ -27,7 +27,6 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public RegisterAuthResponse register(CreateUserDto createUserDto) {
         User newUser = this.userService.createNewUser(createUserDto);
-        UserDetails userDetails = userService.loadUserByUsername(newUser.getUsername());
         return RegisterAuthResponse.builder()
                 .id(newUser.getId())
                 .username(newUser.getUsername())

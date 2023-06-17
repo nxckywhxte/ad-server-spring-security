@@ -9,7 +9,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.nxckywhxte.ad.server.dtos.user.CreateUserDto;
-import ru.nxckywhxte.ad.server.dtos.user.CreateUserResponse;
 import ru.nxckywhxte.ad.server.entities.Role;
 import ru.nxckywhxte.ad.server.entities.User;
 import ru.nxckywhxte.ad.server.repositories.UserRepository;

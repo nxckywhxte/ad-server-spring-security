@@ -1,6 +1,5 @@
 package ru.nxckywhxte.ad.server.services.impl;
 
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -10,9 +9,7 @@ import ru.nxckywhxte.ad.server.entities.Role;
 import ru.nxckywhxte.ad.server.repositories.RoleRepository;
 import ru.nxckywhxte.ad.server.services.RoleService;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -40,12 +37,10 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Collection<RoleResponseDto> getAllRoles() {
         Collection<Role> allRoles = roleRepository.findAll();
-        return allRoles.stream().map(role -> {
-            return RoleResponseDto.builder()
-                    .name(role.getName())
-                    .id(role.getId())
-                    .build();
-        }).toList();
+        return allRoles.stream().map(role -> RoleResponseDto.builder()
+                .name(role.getName())
+                .id(role.getId())
+                .build()).toList();
     }
 
     @Override
