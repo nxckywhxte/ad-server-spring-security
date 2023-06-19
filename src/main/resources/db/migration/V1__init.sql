@@ -37,6 +37,7 @@ create table if not exists _profiles
     phone_number varchar(255) unique,
     gender       gender,
     birthday     date,
+    user_id uuid,
     created_at   timestamp                         default now(),
     updated_at   timestamp                         default now()
 );
@@ -54,6 +55,9 @@ create table if not exists _users_groups
     user_id  uuid not null,
     group_id uuid not null
 );
+
+alter table _profiles
+    add foreign key (user_id) references _users(id);
 
 alter table _users_roles
     add foreign key (user_id) references _users (id),

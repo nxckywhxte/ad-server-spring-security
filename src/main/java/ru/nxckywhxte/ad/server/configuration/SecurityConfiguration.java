@@ -16,7 +16,12 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import ru.nxckywhxte.ad.server.configuration.filters.JwtAuthFilter;
+
+import java.util.List;
 
 @EnableWebSecurity
 @Configuration
@@ -25,10 +30,14 @@ public class SecurityConfiguration {
     private final JwtAuthFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
     private final LogoutHandler logoutHandler;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .cors(AbstractHttpConfigurer::disable)
+                .cors(corsConfigurer -> corsConfigurer
+                        .configurationSource(
+                                corsConfigurationSource()
+                        ))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) ->
                         auth
@@ -45,13 +54,14 @@ public class SecurityConfiguration {
                                         "/swagger-ui/**",
                                         "/webjars/**",
                                         "/swagger-ui.html"
+
                                 )
                                 .permitAll()
-                                .requestMatchers(HttpMethod.GET,"/api/v1/roles").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/roles").permitAll()
                                 .requestMatchers(
-                                        "/api/v1/users/**",
                                         "/api/v1/roles/**",
-                                        "/api/v1/groups/**"
+                                        "/api/v1/groups/**",
+                                        "/api/v1/users/**"
                                 )
                                 .hasRole("Администратор")
                                 .anyRequest().authenticated()
@@ -68,5 +78,17 @@ public class SecurityConfiguration {
                 );
 
         return httpSecurity.build();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+//        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setAllowedOrigins(List.of("*"));
+        corsConfiguration.setAllowedMethods(List.of("*"));
+        corsConfiguration.setAllowedHeaders(List.of("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        return source;
     }
 }

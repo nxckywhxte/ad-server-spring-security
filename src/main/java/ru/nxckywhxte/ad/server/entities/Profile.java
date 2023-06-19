@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import ru.nxckywhxte.ad.server.entities.enums.Gender;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -35,14 +36,20 @@ public class Profile {
     private String avatarUrl;
 
     @Column(name = "birthday")
-    private LocalDateTime birthday;
+    private Date birthday;
 
     @Column(name = "gender")
     private Enum<Gender> gender;
 
+    @OneToOne()
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
     @Column(name = "created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Builder.Default
+    private Date createdAt = new Date();
 
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    @Builder.Default
+    private Date updatedAt = new Date();
 }

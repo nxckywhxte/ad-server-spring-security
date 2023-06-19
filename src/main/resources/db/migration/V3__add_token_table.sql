@@ -1,10 +1,8 @@
-create type token_type as enum ('BEARER');
-
 create table if not exists _tokens
 (
     id      uuid not null primary key default gen_random_uuid(),
     token   text not null unique,
-    token_type token_type,
+    token_type varchar(255),
     revoked bool,
     expired bool,
     user_id uuid not null

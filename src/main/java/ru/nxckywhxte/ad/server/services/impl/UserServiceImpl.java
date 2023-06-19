@@ -17,8 +17,10 @@ import ru.nxckywhxte.ad.server.services.UserService;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -29,18 +31,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findByUsername(username)
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
+        return findByUsername(username)
                 .orElseThrow(
                         () -> new UsernameNotFoundException(
                                 "Пользователь с такими данными не найден"
                         )
                 );
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getHashedPassword(),
-                user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName())).toList()
-        );
     }
 
     @Override
@@ -66,5 +63,12 @@ public class UserServiceImpl implements UserService {
         return newUser;
     }
 
-
+    @Override
+    public User findUserById(UUID id) {
+        User existUser = userRepository.findUserById(id);
+        if (Objects.isNull(existUser)) {
+            throw new ResponseStatusException(NOT_FOUND, "Пользователь с такими данными не найден");
+        }
+        return existUser;
+    }
 }

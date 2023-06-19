@@ -25,8 +25,10 @@ public class Role {
     private String name;
 
     @Column(name = "created_at")
+    @Builder.Default
     private Date createdAt = new Date();
 
     @Column(name = "updated_at")
+    @Builder.Default
     private Date updatedAt = new Date();
 }
