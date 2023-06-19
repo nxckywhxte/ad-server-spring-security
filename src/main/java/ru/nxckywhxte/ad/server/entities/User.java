@@ -1,10 +1,7 @@
 package ru.nxckywhxte.ad.server.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -42,10 +39,11 @@ public class User implements UserDetails {
     @Builder.Default
     private Date updatedAt = new Date();
 
-    @OneToMany(mappedBy = "user")
+    @ToString.Exclude
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Collection<Token> tokens;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "_users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -53,7 +51,7 @@ public class User implements UserDetails {
     )
     private Collection<Role> roles;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "_users_groups",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -61,7 +59,7 @@ public class User implements UserDetails {
     )
     private Collection<Group> groups;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
     private Profile profile;
 

@@ -6,5 +6,5 @@ import ru.nxckywhxte.ad.server.entities.Profile;
 import java.util.UUID;
 
 public interface UserProfileService {
-    Profile createNewProfile(UUID userId, CreateUserProfileDto createUserProfileDto);
+    Profile createNewProfile(UUID userId, CreateUserProfileDto createUserProfileDto, String avatarUri);
 }

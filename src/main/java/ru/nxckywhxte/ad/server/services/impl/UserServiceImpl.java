@@ -1,9 +1,6 @@
 package ru.nxckywhxte.ad.server.services.impl;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,7 +27,6 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    @Transactional
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         return findByUsername(username)
                 .orElseThrow(
@@ -70,5 +66,10 @@ public class UserServiceImpl implements UserService {
             throw new ResponseStatusException(NOT_FOUND, "Пользователь с такими данными не найден");
         }
         return existUser;
+    }
+
+    @Override
+    public User save(User user) {
+        return userRepository.saveAndFlush(user);
     }
 }

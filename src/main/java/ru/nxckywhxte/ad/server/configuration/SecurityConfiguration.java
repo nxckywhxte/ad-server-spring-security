@@ -63,7 +63,7 @@ public class SecurityConfiguration {
                                         "/api/v1/groups/**",
                                         "/api/v1/users/**"
                                 )
-                                .hasRole("Администратор")
+                                .hasAuthority("Администратор")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

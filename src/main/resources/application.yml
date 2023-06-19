@@ -1,9 +1,9 @@
 server:
-  port: 1010
+  port: 6546
 spring:
   datasource:
-#    url: jdbc:postgresql://31.134.130.194:8888/ad-server
-    url: jdbc:postgresql://192.168.1.4:5432/nw-db
+    url: jdbc:postgresql://31.134.130.194:8888/db-spring
+#    url: jdbc:postgresql://192.168.1.4:5432/nw-db
     password: postgres
     username: postgres
     driver-class-name: org.postgresql.Driver
@@ -13,7 +13,7 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   flyway:
-    url: jdbc:postgresql://192.168.1.4:5432/nw-db
+    url: jdbc:postgresql://31.134.130.194:8888/db-spring
     user: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -29,3 +29,4 @@ application:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
+

@@ -1,8 +1,9 @@
 package ru.nxckywhxte.ad.server.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.FileUrlResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,17 +11,18 @@ import ru.nxckywhxte.ad.server.services.StorageService;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class StorageServiceImpl implements StorageService {
     private final Path root = Paths.get("uploads");
+    private final Path icons = Paths.get("icons");
 
     @Override
     public void init() {
@@ -32,23 +34,29 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public void save(MultipartFile file) {
+    public void initIconsPath() {
         try {
-            Files.copy(file.getInputStream(), this.root.resolve(Objects.requireNonNull(file.getOriginalFilename())));
-        } catch (Exception e) {
-            if (e instanceof FileAlreadyExistsException) {
-                throw new RuntimeException("A file of that name already exists.");
-            }
-
-            throw new RuntimeException(e.getMessage());
+            Files.createDirectories(root.resolve(icons));
+        } catch (IOException e) {
+            throw new RuntimeException("Could not initialize folder for upload!");
         }
     }
 
     @Override
-    public Resource load(String filename) {
+    public String saveIcon(MultipartFile file, UUID userId) {
+        Path path = root.resolve(icons.resolve(userId.toString() + ".jpg"));
         try {
-            Path file = root.resolve(filename);
-            Resource resource = new UrlResource(file.toUri());
+            Files.copy(file.getInputStream(), path);
+        } catch (Exception e) {
+            log.warn(e.getMessage());
+        }
+        return path.toString();
+    }
+
+    @Override
+    public Resource loadIcon(String filename) {
+        try {
+            FileUrlResource resource = new FileUrlResource(filename);
 
             if (resource.exists() || resource.isReadable()) {
                 return resource;

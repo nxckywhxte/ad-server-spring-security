@@ -15,5 +15,5 @@ public class UserProfileResponseDto {
     private String patronymic;
     private String avatarUrl;
     private String phoneNumber;
-    private Enum<Gender> gender;
+    private Gender gender;
 }

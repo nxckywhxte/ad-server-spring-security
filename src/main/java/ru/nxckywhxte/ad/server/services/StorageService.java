@@ -5,14 +5,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.net.MalformedURLException;
 import java.nio.file.Path;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 public interface StorageService {
     public void init();
+    public void initIconsPath();
 
-    public void save(MultipartFile file);
+    public String saveIcon(MultipartFile file, UUID userId);
 
-    public Resource load(String filename) throws MalformedURLException;
+    public Resource loadIcon(String filename) throws MalformedURLException;
 
     public void deleteAll();
 

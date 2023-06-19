@@ -13,4 +13,5 @@ public interface UserService extends UserDetailsService {
     User createNewUser(CreateUserDto createUserDto);
 
     User findUserById(UUID id);
+    User save(User user);
 }

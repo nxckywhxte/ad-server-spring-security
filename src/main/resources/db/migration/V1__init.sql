@@ -25,8 +25,6 @@ create table if not exists _users
     updated_at      timestamp                         default now()
 );
 
-create type gender as enum ('Мужской','Женский');
-
 create table if not exists _profiles
 (
     id           uuid         not null primary key default gen_random_uuid(),
@@ -35,9 +33,9 @@ create table if not exists _profiles
     patronymic   varchar(255) not null,
     avatar_url   text,
     phone_number varchar(255) unique,
-    gender       gender,
+    gender       text,
     birthday     date,
-    user_id uuid,
+    user_id      uuid,
     created_at   timestamp                         default now(),
     updated_at   timestamp                         default now()
 );
@@ -57,7 +55,7 @@ create table if not exists _users_groups
 );
 
 alter table _profiles
-    add foreign key (user_id) references _users(id);
+    add foreign key (user_id) references _users (id);
 
 alter table _users_roles
     add foreign key (user_id) references _users (id),

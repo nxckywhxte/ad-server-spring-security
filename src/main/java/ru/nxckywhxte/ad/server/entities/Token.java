@@ -1,10 +1,7 @@
 package ru.nxckywhxte.ad.server.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.nxckywhxte.ad.server.entities.enums.TokenType;
 
 import java.util.UUID;
@@ -14,6 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@ToString
 @Table(name = "_tokens")
 public class Token {
     @Id
@@ -30,8 +28,8 @@ public class Token {
     public boolean revoked;
 
     public boolean expired;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     public User user;
 }

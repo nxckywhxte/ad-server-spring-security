@@ -1,13 +1,9 @@
 package ru.nxckywhxte.ad.server.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.nxckywhxte.ad.server.entities.enums.Gender;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -39,9 +35,11 @@ public class Profile {
     private Date birthday;
 
     @Column(name = "gender")
-    private Enum<Gender> gender;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     @OneToOne()
+    @ToString.Exclude
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
