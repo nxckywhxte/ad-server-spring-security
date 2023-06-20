@@ -82,4 +82,9 @@ public class RoleServiceImpl implements RoleService {
         }
         this.roleRepository.delete(existRole);
     }
+
+    @Override
+    public Collection<Role> findAllRolesByName(String roleName) {
+        return roleRepository.findRolesByName(roleName);
+    }
 }

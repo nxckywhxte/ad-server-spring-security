@@ -21,4 +21,6 @@ public interface RoleService {
     Role getRoleByName(String roleName);
 
     void deleteRoleById(UUID id);
+
+    Collection<Role> findAllRolesByName(String roleName);
 }

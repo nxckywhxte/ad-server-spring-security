@@ -11,10 +11,7 @@ import ru.nxckywhxte.ad.server.entities.User;
 import ru.nxckywhxte.ad.server.repositories.UserRepository;
 import ru.nxckywhxte.ad.server.services.UserService;
 
-import java.util.Collections;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -69,7 +66,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User save(User user) {
-        return userRepository.saveAndFlush(user);
+    public void save(User user) {
+        userRepository.saveAndFlush(user);
     }
+
+    @Override
+    public Collection<User> findAllUsers() {
+        return this.userRepository.findAll();
+    }
+
+    @Override
+    public Collection<User> findAllUsersByRole(Collection<Role> roles) {
+        return userRepository.findAllByRoles(roles);
+    }
+
+
 }

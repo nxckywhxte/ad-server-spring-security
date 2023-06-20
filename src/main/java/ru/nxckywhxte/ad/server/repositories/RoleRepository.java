@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.nxckywhxte.ad.server.entities.Role;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,5 +17,7 @@ public interface RoleRepository extends JpaRepository<Role, UUID> {
     Optional<Role> findRoleByName(String name);
 
     Boolean existsRoleByName(String name);
+
+    Collection<Role> findRolesByName(String roleName);
 
 }

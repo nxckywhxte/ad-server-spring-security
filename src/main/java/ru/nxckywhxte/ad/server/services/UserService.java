@@ -2,8 +2,10 @@ package ru.nxckywhxte.ad.server.services;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 import ru.nxckywhxte.ad.server.dtos.user.CreateUserDto;
+import ru.nxckywhxte.ad.server.entities.Role;
 import ru.nxckywhxte.ad.server.entities.User;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,5 +15,10 @@ public interface UserService extends UserDetailsService {
     User createNewUser(CreateUserDto createUserDto);
 
     User findUserById(UUID id);
-    User save(User user);
+
+    void save(User user);
+
+    Collection<User> findAllUsers();
+
+    Collection<User> findAllUsersByRole(Collection<Role> roles);
 }

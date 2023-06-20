@@ -3,8 +3,10 @@ package ru.nxckywhxte.ad.server.repositories;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import ru.nxckywhxte.ad.server.entities.Role;
 import ru.nxckywhxte.ad.server.entities.User;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,4 +16,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findUserByUsername(String username);
     User findByUsername(String username);
     User findUserById(UUID id);
+
+    Collection<User> findAllByRoles(Collection<Role> roles);
 }

@@ -61,7 +61,8 @@ public class SecurityConfiguration {
                                 .requestMatchers(
                                         "/api/v1/roles/**",
                                         "/api/v1/groups/**",
-                                        "/api/v1/users/**"
+                                        "/api/v1/users/**",
+                                        "/api/v1/admin/**"
                                 )
                                 .hasAuthority("Администратор")
                                 .anyRequest().authenticated()
