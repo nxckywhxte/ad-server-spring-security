@@ -5,6 +5,7 @@ import ru.nxckywhxte.ad.server.dtos.user.CreateUserDto;
 import ru.nxckywhxte.ad.server.entities.Role;
 import ru.nxckywhxte.ad.server.entities.User;
 
+import java.security.Principal;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,5 +21,9 @@ public interface UserService extends UserDetailsService {
 
     Collection<User> findAllUsers();
 
+    Collection<User> findAllUsersByRole();
+
     Collection<User> findAllUsersByRole(Collection<Role> roles);
+
+    User getMe(Principal principal);
 }

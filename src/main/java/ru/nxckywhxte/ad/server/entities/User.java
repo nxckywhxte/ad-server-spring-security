@@ -1,5 +1,6 @@
 package ru.nxckywhxte.ad.server.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,6 +30,7 @@ public class User implements UserDetails {
     private String email;
 
     @Column(name = "hashed_password")
+    @JsonIgnore
     private String hashedPassword;
 
     @Column(name = "created_at")

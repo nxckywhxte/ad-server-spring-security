@@ -9,14 +9,15 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 public interface StorageService {
-    public void init();
-    public void initIconsPath();
+    void init();
 
-    public String saveIcon(MultipartFile file, UUID userId);
+    void initIconsPath();
 
-    public Resource loadIcon(String filename) throws MalformedURLException;
+    String saveIcon(MultipartFile file, UUID userId);
 
-    public void deleteAll();
+    Resource loadIcon(String filename);
 
-    public Stream<Path> loadAll();
+    void deleteAll();
+
+    Stream<Path> loadAll();
 }

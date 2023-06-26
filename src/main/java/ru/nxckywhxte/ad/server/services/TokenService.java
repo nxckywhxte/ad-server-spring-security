@@ -8,7 +8,9 @@ import java.io.IOException;
 
 public interface TokenService {
     void saveUserToken(User user, String accessToken);
+
     void revokeAllUserToken(User user);
+
     void refreshToken(HttpServletRequest request,
                       HttpServletResponse response
     ) throws IOException;

@@ -1,5 +1,6 @@
 package ru.nxckywhxte.ad.server.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import ru.nxckywhxte.ad.server.entities.enums.Gender;
@@ -40,6 +41,7 @@ public class Profile {
 
     @OneToOne()
     @ToString.Exclude
+    @JsonIgnore
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 

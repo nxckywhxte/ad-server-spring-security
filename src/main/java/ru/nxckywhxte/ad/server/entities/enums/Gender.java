@@ -1,10 +1,10 @@
 package ru.nxckywhxte.ad.server.entities.enums;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public enum Gender {
-    MALE("Мужской"),
-    FEMALE("Женский");
-
-    Gender(String name) {
-
-    }
+    @JsonProperty("Мужской")
+    MALE,
+    @JsonProperty("Женский")
+    FEMALE
 }

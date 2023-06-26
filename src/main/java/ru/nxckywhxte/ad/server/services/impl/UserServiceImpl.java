@@ -11,6 +11,7 @@ import ru.nxckywhxte.ad.server.entities.User;
 import ru.nxckywhxte.ad.server.repositories.UserRepository;
 import ru.nxckywhxte.ad.server.services.UserService;
 
+import java.security.Principal;
 import java.util.*;
 
 import static org.springframework.http.HttpStatus.CONFLICT;
@@ -76,8 +77,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Collection<User> findAllUsersByRole() {
+        return null;
+    }
+
+    @Override
     public Collection<User> findAllUsersByRole(Collection<Role> roles) {
-        return userRepository.findAllByRoles(roles);
+        return null;
+    }
+
+    @Override
+    public User getMe(Principal principal) {
+        String username = principal.getName();
+        return findByUsername(username).orElseThrow();
     }
 
 

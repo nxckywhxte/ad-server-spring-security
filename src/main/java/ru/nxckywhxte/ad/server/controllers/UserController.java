@@ -3,21 +3,21 @@ package ru.nxckywhxte.ad.server.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
-import ru.nxckywhxte.ad.server.dtos.profile.CreateUserProfileDto;
-import ru.nxckywhxte.ad.server.dtos.profile.UserProfileResponseDto;
-import ru.nxckywhxte.ad.server.entities.Profile;
+import ru.nxckywhxte.ad.server.dtos.auth.ResponseAuthDto;
+import ru.nxckywhxte.ad.server.dtos.user.UserResponseDto;
 import ru.nxckywhxte.ad.server.entities.User;
 import ru.nxckywhxte.ad.server.services.impl.StorageServiceImpl;
-import ru.nxckywhxte.ad.server.services.impl.UserProfileServiceImpl;
 import ru.nxckywhxte.ad.server.services.impl.UserServiceImpl;
 
-import java.util.Objects;
+import java.security.Principal;
+import java.util.Collection;
 import java.util.UUID;
 
-import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -25,34 +25,65 @@ import static org.springframework.http.HttpStatus.CONFLICT;
 public class UserController {
     private final UserServiceImpl userService;
     private final StorageServiceImpl storageService;
-    private final UserProfileServiceImpl userProfileService;
-
-    @PostMapping(value = "/profile/{userId}")
-    public UserProfileResponseDto updateUserProfile(@RequestPart("user-info") CreateUserProfileDto createUserProfileDto, @RequestPart("file") MultipartFile file, @PathVariable String userId) {
-        //ищем пользователя по айди
-        User user = userService.findUserById(UUID.fromString(userId));
-        // проверяем у пользователя айди профиля на налл
-        if (Objects.nonNull(user.getProfile())) {
-            throw new ResponseStatusException(CONFLICT, "Невозможно создать профиль для пользователя");
-        }
-        storageService.initIconsPath();
-        String avatarUri = storageService.saveIcon(file, user.getId());
-
-        Profile newProfile = userProfileService.createNewProfile(UUID.fromString(userId), createUserProfileDto, avatarUri);
-        // если профиль равно налл то создаеем новый профиль если не налл выкидываем ошибку
-        return UserProfileResponseDto.builder()
-                .id(newProfile.getId())
-                .lastName(newProfile.getLastName())
-                .firstName(newProfile.getFirstName())
-                .patronymic(newProfile.getPatronymic())
-                .avatarUrl(newProfile.getAvatarUrl())
-                .gender(newProfile.getGender())
-                .build();
-    }
 
     @GetMapping(value = "/get-icon/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
     public Resource getImage(@PathVariable String id) {
         User user = userService.findUserById(UUID.fromString(id));
         return storageService.loadIcon(user.getProfile().getAvatarUrl());
     }
+
+    @GetMapping()
+    public ResponseEntity<?> getAllUsers() {
+        Collection<User> allUsers = userService.findAllUsers();
+        Collection<UserResponseDto> allUsersResponse = allUsers.stream().map(user -> UserResponseDto.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .username(user.getUsername())
+                .roles(user.getRoles())
+                .groups(user.getGroups())
+                .profile(user.getProfile())
+                .build()).toList();
+        return new ResponseEntity<>(allUsersResponse, OK);
+    }
+
+    @GetMapping("{userId}")
+    public ResponseEntity<?> getOneUserById(@PathVariable String userId) {
+        User user = userService.findUserById(UUID.fromString(userId));
+        UserResponseDto userResponseDto = UserResponseDto.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .username(user.getUsername())
+                .roles(user.getRoles())
+                .groups(user.getGroups())
+                .profile(user.getProfile())
+                .build();
+        return new ResponseEntity<>(userResponseDto, OK);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getMe(Principal principal) {
+        try {
+            User user = userService.getMe(principal);
+            UserResponseDto userResponseDto = UserResponseDto
+                    .builder()
+                    .id(user.getId())
+                    .email(user.getEmail())
+                    .username(user.getUsername())
+                    .roles(user.getRoles())
+                    .groups(user.getGroups())
+                    .profile(user.getProfile())
+                    .build();
+
+            return new ResponseEntity<>(userResponseDto, OK);
+        } catch(UsernameNotFoundException e) {
+            return new ResponseEntity<>(
+                    ResponseAuthDto
+                            .builder()
+                            .status(404)
+                            .message("Пользователь не найден")
+                            .build(), NOT_FOUND);
+        }
+
+    }
+
 }

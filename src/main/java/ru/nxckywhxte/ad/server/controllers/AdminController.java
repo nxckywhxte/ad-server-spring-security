@@ -36,6 +36,7 @@ public class AdminController {
                                 .email(user.getEmail())
                                 .roles(user.getRoles())
                                 .groups(user.getGroups())
+                                .profile(user.getProfile())
                                 .build()
                 ).toList();
         return new ResponseEntity<>(response, OK);

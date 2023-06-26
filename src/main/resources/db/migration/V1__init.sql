@@ -1,3 +1,4 @@
+
 create table if not exists _roles
 (
     id         uuid         not null primary key default gen_random_uuid(),
@@ -67,3 +68,4 @@ alter table _users_groups
 
 alter table _users
     add foreign key (profile_id) references _profiles (id);
+

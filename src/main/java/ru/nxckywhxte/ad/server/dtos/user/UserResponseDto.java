@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import ru.nxckywhxte.ad.server.entities.Group;
+import ru.nxckywhxte.ad.server.entities.Profile;
 import ru.nxckywhxte.ad.server.entities.Role;
 
 import java.util.Collection;
@@ -22,4 +23,6 @@ public class UserResponseDto {
     private Collection<Role> roles;
     @JsonProperty("groups")
     private Collection<Group> groups;
+    @JsonProperty("profile")
+    private Profile profile;
 }
