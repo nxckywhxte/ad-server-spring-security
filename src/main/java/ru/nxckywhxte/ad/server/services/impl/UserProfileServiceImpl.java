@@ -43,4 +43,9 @@ public class UserProfileServiceImpl implements UserProfileService {
         userService.save(existUser);
         return newProfile;
     }
+
+    @Override
+    public void deleteProfile(UUID id) {
+        profileRepository.deleteById(id);
+    }
 }

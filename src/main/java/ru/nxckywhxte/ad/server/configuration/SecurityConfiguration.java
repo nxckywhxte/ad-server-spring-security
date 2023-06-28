@@ -57,7 +57,9 @@ public class SecurityConfiguration {
 
                                 )
                                 .permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/v1/roles").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/roles", "/api/v1/users/get-icon/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/users/me").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/users/{userId}").authenticated()
                                 .requestMatchers(
                                         "/api/v1/roles/**",
                                         "/api/v1/groups/**",

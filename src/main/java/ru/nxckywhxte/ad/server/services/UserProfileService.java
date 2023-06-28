@@ -7,4 +7,6 @@ import java.util.UUID;
 
 public interface UserProfileService {
     Profile createNewProfile(UUID userId, CreateUserProfileDto createUserProfileDto, String avatarUri);
+
+    void deleteProfile(UUID id);
 }

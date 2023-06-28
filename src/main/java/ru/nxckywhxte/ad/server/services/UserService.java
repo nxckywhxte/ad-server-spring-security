@@ -26,4 +26,6 @@ public interface UserService extends UserDetailsService {
     Collection<User> findAllUsersByRole(Collection<Role> roles);
 
     User getMe(Principal principal);
+
+    void deleteUser(String userId);
 }

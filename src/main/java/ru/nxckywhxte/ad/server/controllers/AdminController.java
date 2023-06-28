@@ -2,10 +2,7 @@ package ru.nxckywhxte.ad.server.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.nxckywhxte.ad.server.dtos.user.UserResponseDto;
 import ru.nxckywhxte.ad.server.entities.Role;
 import ru.nxckywhxte.ad.server.entities.User;
@@ -40,6 +37,12 @@ public class AdminController {
                                 .build()
                 ).toList();
         return new ResponseEntity<>(response, OK);
+    }
+
+    @DeleteMapping("/users/{userId}")
+    public ResponseEntity<?> removeUser(@PathVariable String userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.ok(null);
     }
 
     @GetMapping("/teachers")

@@ -92,5 +92,8 @@ public class UserServiceImpl implements UserService {
         return findByUsername(username).orElseThrow();
     }
 
+    @Override
+    public void deleteUser(String userId) {
 
+    }
 }

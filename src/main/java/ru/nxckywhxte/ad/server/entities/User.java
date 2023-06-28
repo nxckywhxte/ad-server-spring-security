@@ -3,6 +3,8 @@ package ru.nxckywhxte.ad.server.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,10 +43,12 @@ public class User implements UserDetails {
     @Builder.Default
     private Date updatedAt = new Date();
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ToString.Exclude
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Collection<Token> tokens;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "_users_roles",
@@ -53,6 +57,7 @@ public class User implements UserDetails {
     )
     private Collection<Role> roles;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "_users_groups",
@@ -61,6 +66,7 @@ public class User implements UserDetails {
     )
     private Collection<Group> groups;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
     private Profile profile;

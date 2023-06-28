@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import ru.nxckywhxte.ad.server.dtos.auth.ResponseAuthDto;
 import ru.nxckywhxte.ad.server.dtos.user.UserResponseDto;
 import ru.nxckywhxte.ad.server.entities.User;
@@ -26,7 +27,7 @@ public class UserController {
     private final UserServiceImpl userService;
     private final StorageServiceImpl storageService;
 
-    @GetMapping(value = "/get-icon/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/get-icon/{id}.jpg", produces = MediaType.IMAGE_JPEG_VALUE)
     public Resource getImage(@PathVariable String id) {
         User user = userService.findUserById(UUID.fromString(id));
         return storageService.loadIcon(user.getProfile().getAvatarUrl());
@@ -60,6 +61,11 @@ public class UserController {
         return new ResponseEntity<>(userResponseDto, OK);
     }
 
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<?> removeUser(@PathVariable String userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.ok(null);
+    }
     @GetMapping("/me")
     public ResponseEntity<?> getMe(Principal principal) {
         try {
@@ -75,7 +81,7 @@ public class UserController {
                     .build();
 
             return new ResponseEntity<>(userResponseDto, OK);
-        } catch(UsernameNotFoundException e) {
+        } catch(HttpClientErrorException.Unauthorized e) {
             return new ResponseEntity<>(
                     ResponseAuthDto
                             .builder()
